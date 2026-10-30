@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Lingeshwaran — Software & Web Developer. Clean, dependable web products." />
+<title>Lingeshwaran — Software &amp; Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08090a;
+    --bg-soft:#0c0d0f;
+    --text:#f7f8f8;
+    --muted:#8a8f98;
+    --faint:#5f6368;
+    --line:rgba(255,255,255,.09);
+    --line-soft:rgba(255,255,255,.06);
+    --accent:#5e6ad2;
+    --accent-hi:#7b86ea;
+    --accent-soft:rgba(94,106,210,.14);
+    --radius:14px;
+    --maxw:1080px;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:88px}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:rgba(94,106,210,.35);color:#fff}
+  a{color:inherit}
+  img{max-width:100%;display:block}
+
+  /* ---------- ambient background (very subtle) ---------- */
+  .bg-glow{
+    position:fixed;top:-30%;left:50%;width:1200px;height:900px;
+    transform:translateX(-50%);
+    background:radial-gradient(ellipse at center,rgba(94,106,210,.16),rgba(94,106,210,0) 62%);
+    filter:blur(40px);z-index:-2;pointer-events:none;
+    animation:drift 26s ease-in-out infinite alternate;
+  }
+  @keyframes drift{
+    0%{transform:translateX(-50%) translateY(0) scale(1);opacity:.85}
+    100%{transform:translateX(-50%) translateY(40px) scale(1.08);opacity:1}
+  }
+  .bg-noise{
+    position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.022;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- layout ---------- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  section{padding:104px 0;position:relative}
+  .label{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--faint);
+    margin-bottom:20px;
+  }
+  .label::before{content:"";width:22px;height:1px;background:var(--line);display:inline-block}
+  h2{
+    font-size:clamp(1.7rem,3.3vw,2.35rem);font-weight:600;
+    letter-spacing:-.025em;line-height:1.14;color:var(--text);
+  }
+  .lead{color:var(--muted);font-size:16.5px;line-height:1.65;max-width:60ch;margin-top:16px}
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    transition:background .3s var(--ease),border-color .3s var(--ease),backdrop-filter .3s;
+    border-bottom:1px solid transparent;
+  }
+  header.nav.scrolled{
+    background:rgba(8,9,10,.72);
+    backdrop-filter:blur(14px) saturate(160%);
+    -webkit-backdrop-filter:blur(14px) saturate(160%);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:14.5px;letter-spacing:-.01em}
+  .brand .mark{
+    width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
+    background:linear-gradient(135deg,#5e6ad2,#8b5cf6);
+    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:#fff;
+    box-shadow:0 0 0 1px rgba(255,255,255,.08) inset;
+  }
+  nav.links{display:flex;align-items:center;gap:4px}
+  nav.links a{
+    color:var(--muted);text-decoration:none;font-size:14px;font-weight:450;
+    padding:8px 12px;border-radius:8px;transition:color .18s,background .18s;
+  }
+  nav.links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .nav-cta{
+    margin-left:8px;text-decoration:none;font-size:13.5px;font-weight:500;
+    color:var(--text);padding:7px 14px;border-radius:8px;
+    background:rgba(255,255,255,.06);border:1px solid var(--line);
+    transition:background .18s,border-color .18s,transform .18s;
+  }
+  .nav-cta:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);transform:translateY(-1px)}
+  .hamburger{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:38px;height:38px;cursor:pointer;color:var(--text);align-items:center;justify-content:center}
+  .hamburger svg{width:18px;height:18px}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;
+    border-radius:9px;font-size:14px;font-weight:500;letter-spacing:-.01em;
+    text-decoration:none;border:1px solid transparent;cursor:pointer;
+    transition:background .18s var(--ease),border-color .18s,transform .18s var(--ease),box-shadow .18s;
+  }
+  .btn svg{width:15px;height:15px}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 10px 26px -14px rgba(94,106,210,.9)}
+  .btn-primary:hover{background:var(--accent-hi);transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 14px 32px -14px rgba(94,106,210,1)}
+  .btn-secondary{background:rgba(255,255,255,.05);color:var(--text);border-color:var(--line)}
+  .btn-secondary:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.18);transform:translateY(-1px)}
+
+  /* ---------- hero ---------- */
+  .hero{padding-top:168px;padding-bottom:96px}
+  .hero .eyebrow{
+    display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--muted);
+    padding:6px 12px 6px 10px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.03);margin-bottom:26px;
+  }
+  .hero .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:#3ecf8e;box-shadow:0 0 0 3px rgba(62,207,142,.15)}
+  .hero h1{
+    font-size:clamp(2.3rem,5.4vw,3.9rem);font-weight:600;
+    letter-spacing:-.035em;line-height:1.06;color:var(--text);max-width:16ch;
+  }
+  .hero h1 .accent{color:var(--muted)}
+  .hero .sub{color:var(--muted);font-size:17px;line-height:1.6;max-width:54ch;margin:24px 0 34px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    margin-top:76px;border-top:1px solid var(--line-soft);
+  }
+  .stat{padding:26px 28px 0 0}
+  .stat + .stat{padding-left:28px;border-left:1px solid var(--line-soft)}
+  .stat b{display:block;font-size:1.75rem;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .stat small{color:var(--faint);font-size:13px;letter-spacing:.01em}
+
+  /* ---------- tech strip ---------- */
+  .tech{
+    padding:0 0 88px;
+  }
+  .tech-inner{
+    display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;
+    padding-top:34px;border-top:1px solid var(--line-soft);
+  }
+  .tech-inner span{font-size:13.5px;color:var(--faint);font-family:'JetBrains Mono',monospace;letter-spacing:.02em}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;margin-top:44px}
+  .about-grid p{color:var(--muted);font-size:16px;line-height:1.7;margin-bottom:18px}
+  .about-grid p strong{color:var(--text);font-weight:500}
+  .exp{border-top:1px solid var(--line-soft)}
+  .exp-item{padding:18px 0;border-bottom:1px solid var(--line-soft)}
+  .exp-item .top{display:flex;justify-content:space-between;gap:20px;align-items:baseline}
+  .exp-item h4{font-size:15px;font-weight:500;color:var(--text)}
+  .exp-item .when{font-size:12.5px;color:var(--faint);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+  .exp-item p{font-size:14px;color:var(--muted);margin-top:5px;margin-bottom:0}
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:48px}
+  .card{
+    position:relative;display:flex;flex-direction:column;gap:14px;
+    padding:24px;border-radius:var(--radius);border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.008));
+    transition:border-color .22s var(--ease),background .22s var(--ease),transform .22s var(--ease);
+  }
+  .card:hover{border-color:rgba(255,255,255,.18);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));transform:translateY(-2px)}
+  .card .head{display:flex;align-items:center;justify-content:space-between}
+  .card .ico{
+    width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--muted);
+    transition:color .22s,border-color .22s;
+  }
+  .card:hover .ico{color:var(--accent-hi);border-color:rgba(123,134,234,.4)}
+  .card .ico svg{width:18px;height:18px}
+  .card .arrow{color:var(--faint);transition:color .22s,transform .22s}
+  .card:hover .arrow{color:var(--text);transform:translate(2px,-2px)}
+  .card h3{font-size:16.5px;font-weight:550;letter-spacing:-.015em;color:var(--text)}
+  .card p{font-size:14px;color:var(--muted);line-height:1.6;flex:1}
+  .tags{display:flex;flex-wrap:wrap;gap:7px}
+  .tag{
+    font-size:12px;color:var(--muted);padding:4px 9px;border-radius:6px;
+    border:1px solid var(--line-soft);background:rgba(255,255,255,.02);
+    font-family:'JetBrains Mono',monospace;letter-spacing:.01em;
+  }
+
+  /* ---------- skills ---------- */
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:48px}
+  .skill-col h4{
+    font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--faint);margin-bottom:16px;font-family:'JetBrains Mono',monospace;
+  }
+  .skill-col ul{list-style:none;border-top:1px solid var(--line-soft)}
+  .skill-col li{
+    display:flex;align-items:center;gap:11px;font-size:14.5px;color:var(--text);
+    padding:11px 0;border-bottom:1px solid var(--line-soft);
+  }
+  .skill-col li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.75;flex:none}
+
+  /* ---------- contact ---------- */
+  .contact-card{
+    margin-top:44px;padding:56px 48px;border-radius:20px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(94,106,210,.10),rgba(255,255,255,.012));
+    text-align:center;
+  }
+  .contact-card h2{margin-bottom:14px}
+  .contact-card p{color:var(--muted);max-width:52ch;margin:0 auto 30px;font-size:16.5px}
+  .contact-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+  .contact-links{display:flex;flex-wrap:wrap;gap:28px;justify-content:center;margin-top:38px;padding-top:28px;border-top:1px solid var(--line-soft)}
+  .contact-links a{display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:14px;transition:color .18s}
+  .contact-links a:hover{color:var(--text)}
+  .contact-links svg{width:16px;height:16px}
+
+  /* ---------- footer ---------- */
+  footer{padding:34px 0;border-top:1px solid var(--line-soft);margin-top:36px}
+  .foot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;color:var(--faint);font-size:13.5px}
+  .foot .mono{font-family:'JetBrains Mono',monospace}
+
+  /* ---------- reveal (the only motion) ---------- */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}.d4{transition-delay:.24s}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .about-grid{grid-template-columns:1fr;gap:40px}
+    .skills-grid{grid-template-columns:1fr 1fr;gap:32px}
+  }
+  @media (max-width:720px){
+    section{padding:80px 0}
+    .hero{padding-top:132px;padding-bottom:72px}
+    .stats{grid-template-columns:1fr;border-top:1px solid var(--line-soft)}
+    .stat{padding:20px 0}
+    .stat + .stat{padding-left:0;border-left:0;border-top:1px solid var(--line-soft)}
+    .skills-grid{grid-template-columns:1fr}
+    .contact-card{padding:40px 24px}
+    nav.links{
+      position:fixed;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;
+      background:rgba(8,9,10,.97);backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line-soft);padding:14px 20px 20px;
+      transform:translateY(-135%);transition:transform .3s var(--ease);
+    }
+    nav.links.open{transform:translateY(0)}
+    nav.links a{padding:12px 10px;border-radius:8px}
+    .nav-cta{margin:8px 0 0;text-align:center}
+    .hamburger{display:flex}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-noise"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand">
+      <span class="mark">L</span>
+      <span>Lingeshwaran</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="links" id="links">
+      <a href="#about">About</a>
+      <a href="#projects">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="nav-cta">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow reveal"><span class="dot"></span> Available for new projects</span>
+      <h1 class="reveal d1">I build fast, dependable <span class="accent">web products.</span></h1>
+      <p class="sub reveal d2">I'm Lingeshwaran, a software and web developer. I focus on clean interfaces, solid APIs and the small details that make software feel effortless to use.</p>
+      <div class="hero-actions reveal d3">
+        <a href="#projects" class="btn btn-primary">
+          View my work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#contact" class="btn btn-secondary">Get in touch</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat reveal"><b data-count="3" data-suffix="+">0</b><small>Years coding</small></div>
+        <div class="stat reveal d1"><b data-count="20" data-suffix="+">0</b><small>Projects built</small></div>
+        <div class="stat reveal d2"><b data-count="15" data-suffix="+">0</b><small>Technologies used</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TECH STRIP ============ -->
+  <section class="tech">
+    <div class="wrap">
+      <div class="tech-inner reveal">
+        <span>TypeScript</span><span>React</span><span>Node.js</span><span>Python</span>
+        <span>Next.js</span><span>PostgreSQL</span><span>Docker</span><span>Figma</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <div class="wrap">
+      <span class="label reveal">01 — About</span>
+      <h2 class="reveal d1">Focused on the details that matter</h2>
+
+      <div class="about-grid">
+        <div class="reveal d2">
+          <p>I'm a software and web developer who likes turning ideas into products people actually enjoy using. I work across the stack — building responsive front-ends, writing reliable APIs, and keeping an eye on performance, accessibility and maintainability throughout.</p>
+          <p>My approach is simple: <strong>understand the problem first</strong>, keep the code clean and readable, and iterate quickly with feedback. I care about the finish — the loading states, the edge cases, the things users never notice but always feel.</p>
+        </div>
+        <div class="reveal d3">
+          <div class="exp">
+            <div class="exp-item">
+              <div class="top"><h4>Full-Stack Developer</h4><span class="when">2024 — Present</span></div>
+              <p>Building and shipping web apps end to end — UI, APIs and deployment.</p>
+            </div>
+            <div class="exp-item">
+              <div class="top"><h4>Front-End Developer</h4><span class="when">2023 — 2024</span></div>
+              <p>Component systems, responsive layouts and performance work.</p>
+            </div>
+            <div class="exp-item">
+              <div class="top"><h4>Learning &amp; Freelance</h4><span class="when">2022 — 2023</span></div>
+              <p>Self-taught foundations, personal projects and first client work.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects">
+    <div class="wrap">
+      <span class="label reveal">02 — Work</span>
+      <h2 class="reveal d1">Selected projects</h2>
+      <p class="lead reveal d2">A few pieces that show how I think and build. Swap these for your own — the cards are ready.</p>
+
+      <div class="proj-grid">
+        <article class="card reveal">
+          <div class="head">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+            <a href="#" class="arrow" aria-label="Open project"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </div>
+          <h3>Project One</h3>
+          <p>A short description of what it does, the problem it solves, and the result. Keep it outcome-focused.</p>
+          <div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node</span></div>
+        </article>
+
+        <article class="card reveal d1">
+          <div class="head">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></span>
+            <a href="#" class="arrow" aria-label="Open project"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </div>
+          <h3>Project Two</h3>
+          <p>Highlight the tech, the interesting challenge and what you learned shipping it.</p>
+          <div class="tags"><span class="tag">Next.js</span><span class="tag">Tailwind</span><span class="tag">API</span></div>
+        </article>
+
+        <article class="card reveal d2">
+          <div class="head">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4Z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg></span>
+            <a href="#" class="arrow" aria-label="Open project"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </div>
+          <h3>Project Three</h3>
+          <p>A real case study works best here — what you built, for whom, and the impact it had.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Postgres</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills">
+    <div class="wrap">
+      <span class="label reveal">03 — Skills</span>
+      <h2 class="reveal d1">Tools &amp; technologies</h2>
+
+      <div class="skills-grid">
+        <div class="skill-col reveal">
+          <h4>Front-End</h4>
+          <ul>
+            <li>HTML &amp; CSS</li>
+            <li>JavaScript / TypeScript</li>
+            <li>React</li>
+            <li>Next.js</li>
+          </ul>
+        </div>
+        <div class="skill-col reveal d1">
+          <h4>Back-End</h4>
+          <ul>
+            <li>Node.js</li>
+            <li>Python</li>
+            <li>REST APIs</li>
+            <li>PostgreSQL</li>
+          </ul>
+        </div>
+        <div class="skill-col reveal d2">
+          <h4>Tools</h4>
+          <ul>
+            <li>Git &amp; GitHub</li>
+            <li>Docker</li>
+            <li>Figma</li>
+            <li>Linux</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="wrap">
+      <span class="label reveal">04 — Contact</span>
+      <div class="contact-card reveal d1">
+        <h2>Let's work together</h2>
+        <p>Have a project, a role, or just an idea worth talking about? I'm open to new work and always happy to chat.</p>
+        <div class="contact-actions">
+          <a href="mailto:lingeshrdesai12@gmail.com" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
+            Email me
+          </a>
+          <a href="#" class="btn btn-secondary">Book a call</a>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:lingeshrdesai12@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
+            lingeshrdesai12@gmail.com
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.7c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.34 1.12 2.91.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.79-4.57 5.04.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+            GitHub
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C21.4 8.65 22 11 22 14.1V21h-4v-6.1c0-1.45-.03-3.3-2-3.3-2 0-2.3 1.57-2.3 3.2V21h-4V9Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="yr"></span> Lingeshwaran. All rights reserved.</span>
+    <span class="mono">Built with care.</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // nav scroll state
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 16);
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  // mobile menu
+  const burger = document.getElementById('hamburger');
+  const links = document.getElementById('links');
+  burger.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  // count-up
+  function runCounter(el){
+    if (el.dataset.done) return;
+    el.dataset.done = '1';
+    const target = parseFloat(el.dataset.count) || 0;
+    const suffix = el.dataset.suffix || '';
+    const dur = 1200, t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        e.target.querySelectorAll('[data-count]').forEach(runCounter);
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15, rootMargin:'0px 0px -50px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // active nav link
+  const ids = ['about','projects','skills','contact'];
+  const navLinks = [...document.querySelectorAll('nav.links a')].filter(a => a.hash && !a.classList.contains('nav-cta'));
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        navLinks.forEach(l => l.style.color = l.hash === '#'+e.target.id ? 'var(--text)' : '');
+      }
+    });
+  }, {threshold:0.5});
+  ids.forEach(id => { const s = document.getElementById(id); if (s) spy.observe(s); });
+</script>
+</body>
+</html>
