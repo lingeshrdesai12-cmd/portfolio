@@ -307,9 +307,9 @@
       </div>
 
       <div class="stats">
-        <div class="stat reveal"><b data-count="3" data-suffix="+">0</b><small>Years coding</small></div>
-        <div class="stat reveal d1"><b data-count="20" data-suffix="+">0</b><small>Projects built</small></div>
-        <div class="stat reveal d2"><b data-count="15" data-suffix="+">0</b><small>Technologies used</small></div>
+        <div class="stat reveal"><b data-count="3" data-suffix="+">3+</b><small>Years coding</small></div>
+        <div class="stat reveal d1"><b data-count="20" data-suffix="+">20+</b><small>Projects built</small></div>
+        <div class="stat reveal d2"><b data-count="15" data-suffix="+">15+</b><small>Technologies used</small></div>
       </div>
     </div>
   </section>
@@ -493,7 +493,7 @@
 
   // count-up
   function runCounter(el){
-    if (el.dataset.done) return;
+    if (el.dataset.done || reduce) return;
     el.dataset.done = '1';
     const target = parseFloat(el.dataset.count) || 0;
     const suffix = el.dataset.suffix || '';
@@ -505,6 +505,13 @@
       if (p < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
+  }
+
+  // keep real numbers in the HTML; zero them only when we can animate
+  if (!reduce){
+    document.querySelectorAll('[data-count]').forEach(el => {
+      el.textContent = '0' + (el.dataset.suffix || '');
+    });
   }
 
   // reveal on scroll
